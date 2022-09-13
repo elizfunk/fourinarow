@@ -153,6 +153,37 @@ class FourInARowGame {
     return tempBoard
   }
 
+  handleClick = (event) => {
+    if (this.winner) {
+      window.alert(`The winner is ${this.winner}.  Please start a new game to continue playing.`)
+      return
+    }
+
+    const [pRow, pCol] = event.target.id.split('-')
+
+    const pieceIsEmpty = (this.boardData[pRow][pCol].color === null)
+    const pieceBelowTouched = (pRow === '5') || this.boardData[Number(pRow) + 1][pCol].color
+
+    if (pieceIsEmpty && pieceBelowTouched) {
+      event.target.setAttribute('class', `circle ${this.activePlayer.color}-background`)
+      this.boardData[pRow][pCol].color = this.activePlayer.color
+
+      if (this.activePlayer === this.playerOne) {
+        this.activePlayer = this.playerTwo
+      } else {
+        this.activePlayer = this.playerOne
+      }
+
+      const activePlayerEl = document.getElementById('active-player')
+      activePlayerEl.innerText = `Active player: ${this.activePlayer.color}`
+
+      this.updateIsWinner()
+      
+    } else {
+      window.alert("Only spaces that are empty and have no empty spaces below them can be played.")
+    }
+  }
+
   renderBoard() {
     for (let row = 0; row < this.rows; row++) {
       const rowEl = createStyledElement('row')
@@ -163,39 +194,8 @@ class FourInARowGame {
         const piece = createStyledElement('circle white-background', 'button')
         const id = `${currRow}-${currCol}`
 
-        const handleClick = (event) => {
-          if (this.winner) {
-            window.alert(`The winner is ${this.winner}.  Please start a new game to continue playing.`)
-            return
-          }
-
-          const [pRow, pCol] = event.target.id.split('-')
-
-          const pieceIsEmpty = (this.boardData[pRow][pCol].color === null)
-          const pieceBelowTouched = (pRow === '5') || this.boardData[Number(pRow) + 1][pCol].color
-
-          if (pieceIsEmpty && pieceBelowTouched) {
-            event.target.setAttribute('class', `circle ${this.activePlayer.color}-background`)
-            this.boardData[pRow][pCol].color = this.activePlayer.color
-
-            if (this.activePlayer === this.playerOne) {
-              this.activePlayer = this.playerTwo
-            } else {
-              this.activePlayer = this.playerOne
-            }
-
-            const activePlayerEl = document.getElementById('active-player')
-            activePlayerEl.innerText = `Active player: ${this.activePlayer.color}`
-
-            this.updateIsWinner()
-            
-          } else {
-            window.alert("Only spaces that are empty and have no empty spaces below them can be played.")
-          }
-        }
-
         piece.setAttribute('id', id)
-        piece.addEventListener('click', handleClick)
+        piece.addEventListener('click', this.handleClick)
   
         pieceBackground.append(piece)
         rowEl.append(pieceBackground)
