@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 20px;
+}
+
+h1, h2 {
+  color: darkslategrey;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#board {
+  margin-top: 40px;
+}
+
+.row {
+  display: flex;
+}
+
+.circle {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+
+.white-background {
+  background-color: white;
+}
+
+.red-background {
+  background-color: red;
+}
+
+.blue-background {
+  background-color: blue;
+}
+
+.game-square {
+  height: 90px;
+  width: 90px;
+  background-color: yellow;
+  padding: 20px;
+}
